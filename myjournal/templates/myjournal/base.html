@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {% if title %}
+        <title>My Journal {{ title }}</title>
+    {% else %}
+        <title>My Journal</title>
+    {% endif %}
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css">
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="{% url 'journal-home' %}">Journalman</a>
+      
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'journal-home' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'journal-about' %}">About <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+        
+        {% if user.is_authenticated %}
+          <a href="{% url 'entry-create' %}"><button type="button" class="btn btn-success mr-2">+New Entry</button></a>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+          </form>
+          <a href="{% url 'logout' %}" class="ml-2">Logout</a>
+          <a href="{% url 'profile' %}" class="ml-2">Profile</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="ml-2">Login</a>
+          <a href="{% url 'register' %}" class="ml-2">Register</a>
+
+        {% endif %}
+        
+        
+      </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{ message.tags }}">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Well done!</strong> {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    
+  </body>
+</html>
